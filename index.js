@@ -43,6 +43,7 @@ class CountDown extends React.Component {
     until: Math.max(this.props.until, 0),
     lastUntil: null,
     wentBackgroundAt: null,
+    eventListener: null, // NEW LINE
   };
 
   constructor(props) {
@@ -51,12 +52,12 @@ class CountDown extends React.Component {
   }
 
   componentDidMount() {
-    AppState.addEventListener('change', this._handleAppStateChange);
+    this.state.eventListener = AppState.addEventListener('change', this._handleAppStateChange); // MODIFIED
   }
 
   componentWillUnmount() {
     clearInterval(this.timer);
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    this.state.eventListener.remove(); // MODIFIED
   }
 
   componentDidUpdate(prevProps, prevState) {
